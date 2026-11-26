@@ -110,11 +110,31 @@
       border-radius: 14px;
       padding: 18px;
     }
+    .service-card {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
     .kpi-val {
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       font-weight: 800;
       color: var(--accent);
       margin: 6px 0;
+    }
+    .progress-wrap {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 10px 0 14px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 47%;
+      background: var(--accent);
+      transition: width 0.25s ease;
     }
     .muted { color: var(--muted); font-size: 0.92rem; }
     label { display: block; margin-bottom: 6px; font-weight: 600; }
@@ -195,7 +215,7 @@
       </div>
 
       <div class="tabs">
-        <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">1. لوحة الامتثال</button>
+        <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">1. الخدمات ولوحة الامتثال</button>
         <button class="tab-btn" data-tab="setup" onclick="switchTab('setup')">2. إدخال النشاط والملف</button>
         <button class="tab-btn" data-tab="requirements" onclick="switchTab('requirements')">3. المتطلبات والمواعيد</button>
         <button class="tab-btn" data-tab="advisor" onclick="switchTab('advisor')">4. المستشار الذكي</button>
@@ -204,13 +224,33 @@
   </header>
 
   <main class="container">
-    <!-- الشاشة 1: لوحة الامتثال -->
+    <!-- الشاشة 1: تفاصيل الخدمات + مثال واجهة المستفيد -->
     <section id="tab-dashboard">
+      <div class="card" style="margin-bottom:18px;">
+        <h3>تفاصيل خدمات منصة «رقيب»</h3>
+        <p class="muted">نظرة شاملة على الخدمات الرئيسية التي تقدمها المنصة لأصحاب المنشآت الصغيرة والمتوسطة:</p>
+        <div class="grid-3" style="margin-bottom:0;">
+          <div class="service-card">
+            <strong>الملف التنظيمي وخريطة المتطلبات</strong>
+            <p class="muted" style="margin:6px 0 0;">تحديد المتطلبات والالتزامات المرتبطة بالنشاط والمدينة وحجم المنشأة وترتيبها حسب الأولوية.</p>
+          </div>
+          <div class="service-card">
+            <strong>المتابعة والتنبيهات الاستباقية</strong>
+            <p class="muted" style="margin:6px 0 0;">تنبيهات مبكرة قبل المواعيد وشرح مبسّط لأثر التحديثات النظامية مع ذكر المرجع.</p>
+          </div>
+          <div class="service-card">
+            <strong>المستشار الذكي والحوكمة</strong>
+            <p class="muted" style="margin:6px 0 0;">إجابات إرشادية مرتبطة بالمصدر مع إحالة الحالات غير المؤكدة للمراجعة القانونية.</p>
+          </div>
+        </div>
+      </div>
+
       <div class="grid-3">
         <div class="card">
-          <div class="muted">درجة الامتثال الحالية</div>
-          <div class="kpi-val" id="kpi-score">84%</div>
-          <div class="muted">مثال توضيحي للنموذج الأولي</div>
+          <div class="muted">مثال مؤشر الامتثال للمستفيد</div>
+          <div class="kpi-val" id="kpi-score">47%</div>
+          <div class="progress-wrap"><div class="progress-fill" id="kpi-bar" style="width:47%;"></div></div>
+          <div class="muted">مثال توضيحي لواجهة المستفيد للنموذج الأولي</div>
         </div>
         <div class="card">
           <div class="muted">أقرب استحقاق</div>
@@ -219,15 +259,15 @@
         </div>
         <div class="card">
           <div class="muted">مستندات تحتاج إجراء</div>
-          <div class="kpi-val" id="kpi-docs">2</div>
+          <div class="kpi-val" id="kpi-docs">3</div>
           <div class="muted">غرامات متوقعة تم تجنبها (تقديري): 4,500 ر.س</div>
         </div>
       </div>
 
       <div class="card">
-        <h3>ملخص حالة المنشأة</h3>
+        <h3>مثال واجهة المستفيد — حالة المنشأة الحالية</h3>
         <p id="dashboard-summary">
-          تتابع منصة «رقيب» الالتزامات المرتبطة بنشاطك في مكة المكرمة وتُرتّبها بحسب الخطورة وقرب الموعد، مع توضيح المرجع النظامي لكل بند.
+          يعرض هذا المثال واجهة المستفيد لمنشأة (مطعم في مكة المكرمة): نسبة الامتثال الحالية 47% مع وجود بنود ذات أولوية تتطلب استكمال المستندات والمواعيد القريبة.
         </p>
       </div>
     </section>
@@ -258,7 +298,7 @@
         <div class="card">
           <h3>كيف يشتغل النموذج الأولي؟</h3>
           <p class="muted">
-            يجمع هذا النموذج بين قواعد منظمة لحساب المواعيد والأولويات، وشرح مبسّط مرتبط بالمصدر النظامي. وعند عدم اليقين النظامي يُشير النظام إلى الحاجة لمراجعة قانونية متخصصة.
+            يجمع هذا النموذج بين عرض تفاصيل الخدمات ومثال تفاعلي لواجهة المستفيد، مع قواعد منظمة لحساب المواعيد والأولويات والإحالة للمراجعة القانونية عند عدم اليقين.
           </p>
         </div>
       </div>
@@ -313,10 +353,11 @@
     const dataByActivity = {
       restaurant: {
         label: "مطعم",
-        score: "84%",
+        score: "47%",
+        pct: 47,
         due: "3 أيام",
         dueName: "تجديد رخصة / شهادة صحية",
-        docs: "2",
+        docs: "3",
         reqs: [
           { title: "تجديد الشهادات الصحية للعاملين والرخصة البلدية", priority: "high", prioText: "أولوية قصوى", due: "خلال 3 أيام", source: "الجهة البلدية المختصة — اشتراطات المنشآت الغذائية" },
           { title: "تقديم الإقرار الدوري ومراجعة الالتزامات الضريبية", priority: "med", prioText: "أولوية متوسطة", due: "خلال 14 يوماً", source: "هيئة الزكاة والضريبة والجمارك — الأطر النظامية ذات العلاقة" },
@@ -325,10 +366,11 @@
       },
       ecommerce: {
         label: "متجر إلكتروني",
-        score: "88%",
+        score: "52%",
+        pct: 52,
         due: "7 أيام",
         dueName: "مراجعة بيانات السجل والسياسات",
-        docs: "1",
+        docs: "2",
         reqs: [
           { title: "تحديث بيانات النشاط التجاري وتوضيح سياسات الاستبدال والاسترجاع", priority: "high", prioText: "أولوية قصوى", due: "خلال 7 أيام", source: "نظام التجارة الإلكترونية والأنظمة التجارية ذات العلاقة" },
           { title: "مراجعة ضوابط حماية البيانات الشخصية للعملاء", priority: "med", prioText: "أولوية متوسطة", due: "خلال 15 يوماً", source: "نظام حماية البيانات الشخصية — الضوابط التنظيمية" },
@@ -377,11 +419,12 @@
 
       document.getElementById("active-facility-summary").textContent = `${info.label} — ${city} (${emp} موظفين)`;
       document.getElementById("kpi-score").textContent = info.score;
+      document.getElementById("kpi-bar").style.width = info.pct + "%";
       document.getElementById("kpi-due").textContent = info.due;
       document.getElementById("kpi-due-name").textContent = info.dueName;
       document.getElementById("kpi-docs").textContent = info.docs;
       document.getElementById("dashboard-summary").textContent =
-        `تم تحديث خريطة الامتثال لنشاط (${info.label}) في (${city}) لعدد (${emp}) موظفين. راجع تبويب المتطلبات والمواعيد لمتابعة الأولويات.`;
+        `مثال واجهة المستفيد لنشاط (${info.label}) في (${city}) لعدد (${emp}) موظفين: نسبة الامتثال الحالية ${info.score}. راجع تبويب المتطلبات والمواعيد لمتابعة الأولويات.`;
 
       renderRequirements();
       switchTab("dashboard");
