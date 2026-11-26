@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>رقيب — المراقب الذكي للامتثال التجاري</title>
+  <style>
+    :root {
+      --bg: #0b1d21;
+      --card: #122a30;
+      --card-2: #17353c;
+      --text: #f3f7f7;
+      --muted: #a7bcc0;
+      --accent: #d4a84f;
+      --accent-soft: rgba(212, 168, 79, 0.14);
+      --ok: #2eb872;
+      --warn: #f0a500;
+      --danger: #e05353;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background: linear-gradient(180deg, #091619 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 29, 33, 0.92);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .nav-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-badge {
+      background: var(--accent);
+      color: #0b1d21;
+      font-weight: 800;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .tab-btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #0b1d21;
+      border-color: var(--accent);
+    }
+    .alert-banner {
+      margin-top: 18px;
+      background: rgba(224, 83, 83, 0.14);
+      border: 1px solid rgba(224, 83, 83, 0.45);
+      border-right: 5px solid var(--danger);
+      padding: 14px 16px;
+      border-radius: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .kpi-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 6px 0;
+    }
+    .muted { color: var(--muted); font-size: 0.92rem; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    select, input, button.action-btn {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    select, input {
+      background: var(--card-2);
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    button.action-btn {
+      background: var(--accent);
+      color: #0b1d21;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+    }
+    .req-item {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+    .tag-high { background: rgba(224, 83, 83, 0.2); color: #ff8a8a; }
+    .tag-med { background: rgba(240, 165, 0, 0.2); color: #ffd166; }
+    .tag-low { background: rgba(46, 184, 114, 0.2); color: #7ae5b0; }
+    .source-box {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: var(--accent-soft);
+      border-radius: 8px;
+      font-size: 0.86rem;
+      color: #f6dca3;
+    }
+    .hidden { display: none; }
+    footer {
+      margin-top: 32px;
+      padding: 18px 20px 32px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="nav-row">
+        <div class="brand">
+          <span class="brand-badge">رقيب</span>
+          <div>
+            <strong>المراقب الذكي للامتثال التجاري</strong>
+            <div class="muted">المسار الثالث: الحوكمة والامتثال التجاري الذكي — نموذج أولي</div>
+          </div>
+        </div>
+        <div class="muted" id="active-facility-summary">مطعم — مكة المكرمة (12 موظفاً)</div>
+      </div>
+
+      <div class="alert-banner" id="proactive-alert">
+        <div>
+          <strong>تنبيه استباقي:</strong> رخصة النشاط / الشهادة الصحية تقترب من موعد التجديد خلال أيام — يُنصح بالبدء بالإجراء لتجنب الغرامات.
+        </div>
+        <button class="action-btn" style="width:auto;padding:8px 14px;" onclick="switchTab('requirements')">عرض المتطلب الآن</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">1. لوحة الامتثال</button>
+        <button class="tab-btn" data-tab="setup" onclick="switchTab('setup')">2. إدخال النشاط والملف</button>
+        <button class="tab-btn" data-tab="requirements" onclick="switchTab('requirements')">3. المتطلبات والمواعيد</button>
+        <button class="tab-btn" data-tab="advisor" onclick="switchTab('advisor')">4. المستشار الذكي</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- الشاشة 1: لوحة الامتثال -->
+    <section id="tab-dashboard">
+      <div class="grid-3">
+        <div class="card">
+          <div class="muted">درجة الامتثال الحالية</div>
+          <div class="kpi-val" id="kpi-score">84%</div>
+          <div class="muted">مثال توضيحي للنموذج الأولي</div>
+        </div>
+        <div class="card">
+          <div class="muted">أقرب استحقاق</div>
+          <div class="kpi-val" id="kpi-due">3 أيام</div>
+          <div class="muted" id="kpi-due-name">تجديد رخصة / شهادة تشغيلية</div>
+        </div>
+        <div class="card">
+          <div class="muted">مستندات تحتاج إجراء</div>
+          <div class="kpi-val" id="kpi-docs">2</div>
+          <div class="muted">غرامات متوقعة تم تجنبها (تقديري): 4,500 ر.س</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>ملخص حالة المنشأة</h3>
+        <p id="dashboard-summary">
+          تتابع منصة «رقيب» الالتزامات المرتبطة بنشاطك في مكة المكرمة وتُرتّبها بحسب الخطورة وقرب الموعد، مع توضيح المرجع النظامي لكل بند.
+        </p>
+      </div>
+    </section>
+
+    <!-- الشاشة 2: إدخال بيانات المنشأة -->
+    <section id="tab-setup" class="hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h3>إعداد ملف المنشأة (نموذج أولي)</h3>
+          <label for="activity-select">النشاط التجاري</label>
+          <select id="activity-select">
+            <option value="restaurant" selected>مطعم (مكة المكرمة)</option>
+            <option value="ecommerce">متجر إلكتروني (مكة المكرمة)</option>
+          </select>
+
+          <label for="city-input">المدينة</label>
+          <input id="city-input" type="text" value="مكة المكرمة" />
+
+          <label for="employees-input">عدد الموظفين</label>
+          <input id="employees-input" type="number" value="12" min="1" />
+
+          <label for="doc-input">رفع سجل تجاري / رخصة (محاكاة استخراج البيانات)</label>
+          <input id="doc-input" type="file" />
+
+          <button class="action-btn" onclick="applyFacilitySetup()">تحديث خريطة الامتثال</button>
+        </div>
+
+        <div class="card">
+          <h3>كيف يشتغل النموذج الأولي؟</h3>
+          <p class="muted">
+            يجمع هذا النموذج بين قواعد منظمة لحساب المواعيد والأولويات، وشرح مبسّط مرتبط بالمصدر النظامي. وعند عدم اليقين النظامي يُشير النظام إلى الحاجة لمراجعة قانونية متخصصة.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- الشاشة 3: قائمة المتطلبات والمواعيد -->
+    <section id="tab-requirements" class="hidden">
+      <div class="card">
+        <h3>خريطة المتطلبات والمواعيد مرتبة حسب الأولوية</h3>
+        <div id="requirements-list"></div>
+      </div>
+    </section>
+
+    <!-- المستشار الذكي -->
+    <section id="tab-advisor" class="hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h3>المستشار التنظيمي الذكي (أسئلة تجريبية)</h3>
+          <p class="muted">اختر سؤالاً تجريبياً أو اكتب سؤالاً حول الامتثال التجاري:</p>
+          <button class="tab-btn" style="width:100%;margin-bottom:8px;text-align:right;" onclick="askPreset(0)">
+            1. هل يؤثر تحديث اشتراطات المنشآت الغذائية على مطعمي في مكة؟
+          </button>
+          <button class="tab-btn" style="width:100%;margin-bottom:8px;text-align:right;" onclick="askPreset(1)">
+            2. متى أحتاج مراجعة قانونية مختصة بدلاً من الاعتماد على الإرشاد الآلي؟
+          </button>
+          <button class="tab-btn" style="width:100%;margin-bottom:12px;text-align:right;" onclick="askPreset(2)">
+            3. كيف تساعدني المنصة في تجنب غرامات تأخر التجديد والإقرارات؟
+          </button>
+
+          <label for="custom-q">سؤالك</label>
+          <input id="custom-q" type="text" placeholder="اكتب سؤالك هنا..." />
+          <button class="action-btn" onclick="askCustom()">إرسال السؤال</button>
+        </div>
+
+        <div class="card">
+          <h3>الإجابة والمرجع النظامي</h3>
+          <div id="advisor-answer">
+            <p class="muted">اختر سؤالاً من القائمة أو اكتب سؤالك لعرض الشرح والمصدر.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <strong>تنويه:</strong> هذه المنصة إرشادية لأغراض التحدي ولا تغني عن الاستشارة القانونية المختصة؛ والبيانات والأرقام المعروضة أمثلة توضيحية للنموذج الأولي.
+    </div>
+  </footer>
+
+  <script>
+    const dataByActivity = {
+      restaurant: {
+        label: "مطعم",
+        score: "84%",
+        due: "3 أيام",
+        dueName: "تجديد رخصة / شهادة صحية",
+        docs: "2",
+        reqs: [
+          { title: "تجديد الشهادات الصحية للعاملين والرخصة البلدية", priority: "high", prioText: "أولوية قصوى", due: "خلال 3 أيام", source: "الجهة البلدية المختصة — اشتراطات المنشآت الغذائية" },
+          { title: "تقديم الإقرار الدوري ومراجعة الالتزامات الضريبية", priority: "med", prioText: "أولوية متوسطة", due: "خلال 14 يوماً", source: "هيئة الزكاة والضريبة والجمارك — الأطر النظامية ذات العلاقة" },
+          { title: "مراجعة تسجيل العاملين وتحديث بيانات المنشأة", priority: "low", prioText: "متابعة دورية", due: "شهرياً", source: "منصات العمل والتأمينات الاجتماعية ذات العلاقة" }
+        ]
+      },
+      ecommerce: {
+        label: "متجر إلكتروني",
+        score: "88%",
+        due: "7 أيام",
+        dueName: "مراجعة بيانات السجل والسياسات",
+        docs: "1",
+        reqs: [
+          { title: "تحديث بيانات النشاط التجاري وتوضيح سياسات الاستبدال والاسترجاع", priority: "high", prioText: "أولوية قصوى", due: "خلال 7 أيام", source: "نظام التجارة الإلكترونية والأنظمة التجارية ذات العلاقة" },
+          { title: "مراجعة ضوابط حماية البيانات الشخصية للعملاء", priority: "med", prioText: "أولوية متوسطة", due: "خلال 15 يوماً", source: "نظام حماية البيانات الشخصية — الضوابط التنظيمية" },
+          { title: "متابعة الإقرارات الدورية والتقارير الشهرية", priority: "low", prioText: "متابعة دورية", due: "شهرياً", source: "الجهات التنظيمية المختصة بالنشاط التجاري" }
+        ]
+      }
+    };
+
+    const presetAnswers = [
+      {
+        q: "هل يؤثر تحديث اشتراطات المنشآت الغذائية على مطعمي في مكة؟",
+        a: "قد يؤثر التحديث على البنود المرتبطة بسلامة الغذاء أو الشهادات الصحية أو التراخيص البلدية حسب طبيعة نشاط المطعم، بينما لا تنطبق البنود الخاصة بأنشطة أخرى. يُنصح بالتحقق من نص التحديث الرسمي المعتمد.",
+        src: "المصدر: اللوائح والاشتراطات البلدية المعتمدة للمنشآت الغذائية (مثال توضيحي للنموذج الأولي)."
+      },
+      {
+        q: "متى أحتاج مراجعة قانونية مختصة بدلاً من الاعتماد على الإرشاد الآلي؟",
+        a: "يحتاج الأمر إلى مراجعة قانونية متخصصة عند وجود نزاع أو مخالفة قائمة أو غرامة محل اعتراض أو حالة تنظيمية غير محسومة أو استثناء خاص بمنشأتك؛ المنصة لا تجزم في الحالات غير المؤكدة.",
+        src: "المصدر: حوكمة المنصة — قاعدة الإحالة للمراجعة القانونية عند عدم اليقين."
+      },
+      {
+        q: "كيف تساعدني المنصة في تجنب غرامات تأخر التجديد والإقرارات؟",
+        a: "تجمع المنصة الالتزامات في خريطة واحدة حسب النشاط والمدينة وتصدر تنبيهات استباقية قبل المواعيد بوقت كافٍ لتقليل نسيان المواعيد أو المتابعة اليدوية المتفرقة.",
+        src: "المصدر: وثيقة حل منصة «رقيب» — وحدة تقويم الالتزامات والتنبيهات الاستباقية."
+      }
+    ];
+
+    let currentActivity = "restaurant";
+
+    function switchTab(tabName) {
+      ["dashboard", "setup", "requirements", "advisor"].forEach((t) => {
+        document.getElementById("tab-" + t).classList.toggle("hidden", t !== tabName);
+      });
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        if (btn.dataset.tab) {
+          btn.classList.toggle("active", btn.dataset.tab === tabName);
+        }
+      });
+      if (tabName === "requirements") renderRequirements();
+    }
+
+    function applyFacilitySetup() {
+      currentActivity = document.getElementById("activity-select").value;
+      const city = document.getElementById("city-input").value || "مكة المكرمة";
+      const emp = document.getElementById("employees-input").value || "12";
+      const info = dataByActivity[currentActivity];
+
+      document.getElementById("active-facility-summary").textContent = `${info.label} — ${city} (${emp} موظفين)`;
+      document.getElementById("kpi-score").textContent = info.score;
+      document.getElementById("kpi-due").textContent = info.due;
+      document.getElementById("kpi-due-name").textContent = info.dueName;
+      document.getElementById("kpi-docs").textContent = info.docs;
+      document.getElementById("dashboard-summary").textContent =
+        `تم تحديث خريطة الامتثال لنشاط (${info.label}) في (${city}) لعدد (${emp}) موظفين. راجع تبويب المتطلبات والمواعيد لمتابعة الأولويات.`;
+
+      renderRequirements();
+      switchTab("dashboard");
+    }
+
+    function renderRequirements() {
+      const info = dataByActivity[currentActivity];
+      const container = document.getElementById("requirements-list");
+      container.innerHTML = info.reqs.map((r) => `
+        <div class="req-item">
+          <div>
+            <span class="tag tag-${r.priority}">${r.prioText}</span>
+            <strong>${r.title}</strong>
+          </div>
+          <div class="muted" style="margin-top:6px;">الاستحقاق: ${r.due}</div>
+          <div class="source-box">${r.source}</div>
+        </div>
+      `).join("");
+    }
+
+    function askPreset(idx) {
+      const item = presetAnswers[idx];
+      document.getElementById("advisor-answer").innerHTML = `
+        <p><strong>السؤال:</strong> ${item.q}</p>
+        <p>${item.a}</p>
+        <div class="source-box">${item.src}</div>
+        <div class="source-box" style="margin-top:8px;">تنويه: يحتاج مراجعة قانونية في الحالات غير المؤكدة أو النزاعات؛ المنصة إرشادية فقط.</div>
+      `;
+    }
+
+    function askCustom() {
+      const q = document.getElementById("custom-q").value.trim();
+      if (!q) return;
+      document.getElementById("advisor-answer").innerHTML = `
+        <p><strong>السؤال:</strong> ${q}</p>
+        <p>في النسخة التجريبية للنموذج الأولي يتم ربط الاستفسار بالمتطلبات والأنظمة ذات العلاقة وتوضيح المصدر، وعند عدم كفاية اليقين النظامي يُشار إلى ضرورة المراجعة القانونية المختصة.</p>
+        <div class="source-box">المصدر: نموذج «رقيب» الإرشادي — يتطلب التحقق من الأنظمة الرسمية المعتمدة.</div>
+      `;
+    }
+
+    renderRequirements();
+  </script>
+</body>
+</html>
