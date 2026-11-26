@@ -73,11 +73,11 @@
       background-color: var(--beige);
       color: var(--navy);
       border: 1px solid var(--border);
-      padding: 10px 16px;
+      padding: 10px 15px;
       border-radius: 10px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 0.93rem;
       font-weight: 600;
     }
     .tab-btn.active {
@@ -152,7 +152,7 @@
       font-weight: 600;
       color: var(--navy);
     }
-    select, input, button.action-btn {
+    select, input, textarea, button.action-btn {
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
@@ -160,7 +160,7 @@
       font-family: inherit;
       font-size: 0.95rem;
     }
-    select, input {
+    select, input, textarea {
       background-color: var(--white);
       color: var(--text);
       margin-bottom: 12px;
@@ -175,12 +175,50 @@
     button.action-btn:hover {
       background-color: var(--navy-soft);
     }
-    .req-item {
+    button.secondary-btn {
+      background-color: var(--beige);
+      color: var(--navy);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    button.done-btn {
+      background-color: var(--navy);
+      color: var(--white);
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+    button.done-btn.completed {
+      background-color: #e3f6ec;
+      color: var(--ok);
+      border: 1px solid #b5e2ca;
+    }
+    .req-item, .lawyer-card {
       background-color: var(--beige);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 14px;
       margin-bottom: 10px;
+    }
+    .lawyer-card.selected {
+      border: 2px solid var(--navy);
+      background-color: var(--accent-soft);
+    }
+    .req-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
     }
     .tag {
       display: inline-block;
@@ -193,6 +231,7 @@
     .tag-high { background-color: #fde8e8; color: var(--danger); }
     .tag-med { background-color: #fef3c7; color: var(--warn); }
     .tag-low { background-color: #e3f6ec; color: var(--ok); }
+    .tag-navy { background-color: var(--navy); color: var(--white); }
     .source-box {
       margin-top: 8px;
       padding: 8px 12px;
@@ -201,6 +240,31 @@
       border-radius: 8px;
       font-size: 0.86rem;
       color: var(--navy);
+    }
+    .referral-box {
+      margin-top: 10px;
+      padding: 12px;
+      background-color: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-right: 4px solid var(--accent);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: var(--navy);
+    }
+    .booking-confirm {
+      margin-top: 12px;
+      padding: 14px;
+      background-color: #e3f6ec;
+      border: 1px solid #b5e2ca;
+      border-radius: 10px;
+      color: #145332;
+      font-size: 0.92rem;
+    }
+    .sim-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
     }
     .hidden { display: none; }
     footer {
@@ -239,6 +303,7 @@
         <button class="tab-btn" data-tab="setup" onclick="switchTab('setup')">2. إدخال النشاط والملف</button>
         <button class="tab-btn" data-tab="requirements" onclick="switchTab('requirements')">3. المتطلبات والمواعيد</button>
         <button class="tab-btn" data-tab="advisor" onclick="switchTab('advisor')">4. المستشار الذكي</button>
+        <button class="tab-btn" data-tab="consultations" onclick="switchTab('consultations')">5. الاستشارات القانونية عن بُعد</button>
       </div>
     </div>
   </header>
@@ -259,8 +324,8 @@
             <p class="muted" style="margin:6px 0 0;">تنبيهات مبكرة قبل المواعيد وشرح مبسّط لأثر التحديثات النظامية مع ذكر المرجع.</p>
           </div>
           <div class="service-card">
-            <strong>المستشار الذكي والحوكمة</strong>
-            <p class="muted" style="margin:6px 0 0;">إجابات إرشادية مرتبطة بالمصدر مع إحالة الحالات غير المؤكدة للمراجعة القانونية.</p>
+            <strong>المستشار الذكي والاستشارات المختصة</strong>
+            <p class="muted" style="margin:6px 0 0;">إجابات إرشادية مرتبطة بالمصدر مع إمكانية حجز جلسة استشارة قانونية عن بُعد مع مختصين بالقضايا والعقود التجارية.</p>
           </div>
         </div>
       </div>
@@ -270,7 +335,7 @@
           <div class="muted">مثال مؤشر الامتثال للمستفيد</div>
           <div class="kpi-val" id="kpi-score">47%</div>
           <div class="progress-wrap"><div class="progress-fill" id="kpi-bar" style="width:47%;"></div></div>
-          <div class="muted">مثال توضيحي لواجهة المستفيد للنموذج الأولي</div>
+          <div class="muted">يتحدث تلقائياً عند إتمام المتطلبات</div>
         </div>
         <div class="card">
           <div class="muted">أقرب استحقاق</div>
@@ -280,7 +345,7 @@
         <div class="card">
           <div class="muted">مستندات تحتاج إجراء</div>
           <div class="kpi-val" id="kpi-docs">3</div>
-          <div class="muted">غرامات متوقعة تم تجنبها (تقديري): 4,500 ر.س</div>
+          <div class="muted" id="kpi-saved">غرامات متوقعة تم تجنبها (تقديري): 4,500 ر.س</div>
         </div>
       </div>
 
@@ -318,7 +383,7 @@
         <div class="card">
           <h3>كيف يشتغل النموذج الأولي؟</h3>
           <p class="muted">
-            يجمع هذا النموذج بين عرض تفاصيل الخدمات ومثال تفاعلي لواجهة المستفيد، مع قواعد منظمة لحساب المواعيد والأولويات والإحالة للمراجعة القانونية عند عدم اليقين.
+            يجمع هذا النموذج بين عرض تفاصيل الخدمات ومثال تفاعلي لواجهة المستفيد، مع قواعد منظمة لحساب المواعيد والأولويات والإحالة للمختصين القانونيين عند الحاجة.
           </p>
         </div>
       </div>
@@ -328,16 +393,17 @@
     <section id="tab-requirements" class="hidden">
       <div class="card">
         <h3>خريطة المتطلبات والمواعيد مرتبة حسب الأولوية</h3>
+        <p class="muted">جرّب الضغط على «إتمام المتطلب» لمشاهدة تغيّر نسبة الامتثال والمستندات المعلقة مباشرة.</p>
         <div id="requirements-list"></div>
       </div>
     </section>
 
-    <!-- المستشار الذكي -->
+    <!-- الشاشة 4: المستشار الذكي + محاكي أثر التحديث والإحالة القانونية -->
     <section id="tab-advisor" class="hidden">
       <div class="grid-2">
         <div class="card">
-          <h3>المستشار التنظيمي الذكي (أسئلة تجريبية)</h3>
-          <p class="muted">اختر سؤالاً تجريبياً أو اكتب سؤالاً حول الامتثال التجاري:</p>
+          <h3>المستشار التنظيمي الذكي ومحاكاة التحديثات</h3>
+          <p class="muted">اختر سؤالاً تجريبياً أو جرّب محاكي أثر التحديث والإحالة القانونية:</p>
           <button class="tab-btn" style="width:100%;margin-bottom:8px;text-align:right;" onclick="askPreset(0)">
             1. هل يؤثر تحديث اشتراطات المنشآت الغذائية على مطعمي في مكة؟
           </button>
@@ -348,16 +414,68 @@
             3. كيف تساعدني المنصة في تجنب غرامات تأخر التجديد والإقرارات؟
           </button>
 
+          <div class="service-card" style="margin-bottom:12px;">
+            <strong>محاكي أثر التحديث والإحالة القانونية</strong>
+            <div class="muted" style="margin-top:4px;">اختبر كيف يفرّق النظام بين إرشاد مباشر وحالة تحتاج إحالة لمختص:</div>
+            <div class="sim-row">
+              <button class="secondary-btn" onclick="simulateScenario('clear')">سيناريو واضح (إرشاد مباشر)</button>
+              <button class="secondary-btn" onclick="simulateScenario('dispute')">سيناريو مخالفة/اعتراض (إحالة لمختص)</button>
+            </div>
+          </div>
+
           <label for="custom-q">سؤالك</label>
           <input id="custom-q" type="text" placeholder="اكتب سؤالك هنا..." />
           <button class="action-btn" onclick="askCustom()">إرسال السؤال</button>
         </div>
 
         <div class="card">
-          <h3>الإجابة والمرجع النظامي</h3>
+          <h3>الإجابة والمرجع النظامي وحالة الحوكمة</h3>
           <div id="advisor-answer">
-            <p class="muted">اختر سؤالاً من القائمة أو اكتب سؤالك لعرض الشرح والمصدر.</p>
+            <p class="muted">اختر سؤالاً أو جرّب أحد سيناريوهات المحاكاة لعرض النتيجة والمرجع.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- الشاشة 5: الاستشارات القانونية عن بُعد مع مختصين -->
+    <section id="tab-consultations" class="hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h3>مختصون بالقضايا والعقود التجارية (عن بُعد)</h3>
+          <p class="muted">اختر المستشار المناسب لحالتك التجارية لحجز جلسة استشارية محددة المدة عن بُعد:</p>
+          <div id="lawyers-list"></div>
+        </div>
+
+        <div class="card">
+          <h3>حجز جلسة استشارية عن بُعد</h3>
+          <label for="selected-lawyer">المستشار المختار</label>
+          <input id="selected-lawyer" type="text" value="أ. سارة الحربي — مستشارة عقود وقضايا تجارية" readonly />
+
+          <label for="consult-topic">نوع الاستشارة</label>
+          <select id="consult-topic">
+            <option value="مراجعة وصياغة العقود التجارية">مراجعة وصياغة العقود التجارية</option>
+            <option value="اعتراض على مخالفة أو نزاع تجاري">اعتراض على مخالفة أو نزاع تجاري</option>
+            <option value="امتثال وحوكمة المنشأة">امتثال وحوكمة المنشأة</option>
+          </select>
+
+          <label for="consult-duration">مدة الجلسة عن بُعد</label>
+          <select id="consult-duration">
+            <option value="30 دقيقة — جلسة مركزة">30 دقيقة — جلسة مركزة (مثال توضيحي)</option>
+            <option value="60 دقيقة — جلسة شاملة ومراجعة مستندات">60 دقيقة — جلسة شاملة ومراجعة مستندات (مثال توضيحي)</option>
+          </select>
+
+          <label for="consult-slot">الموعد المناسب</label>
+          <select id="consult-slot">
+            <option value="اليوم — 5:00 مساءً (جلسة مرئية عن بُعد)">اليوم — 5:00 مساءً (جلسة مرئية عن بُعد)</option>
+            <option value="غداً — 11:00 صباحاً (جلسة مرئية عن بُعد)">غداً — 11:00 صباحاً (جلسة مرئية عن بُعد)</option>
+            <option value="غداً — 8:00 مساءً (جلسة صوتية/مرئية عن بُعد)">غداً — 8:00 مساءً (جلسة صوتية/مرئية عن بُعد)</option>
+          </select>
+
+          <label for="consult-notes">ملخص الحالة المرفق للمستشار (يُعبّأ تلقائياً من ملف منشأتك)</label>
+          <textarea id="consult-notes" rows="3">منشأة: مطعم في مكة المكرمة (12 موظفاً) — طلب استشارة حول الالتزامات والعقود التجارية.</textarea>
+
+          <button class="action-btn" onclick="bookConsultation()">تأكيد حجز الجلسة عن بُعد</button>
+          <div id="booking-result"></div>
         </div>
       </div>
     </section>
@@ -373,31 +491,51 @@
     const dataByActivity = {
       restaurant: {
         label: "مطعم",
-        score: "47%",
-        pct: 47,
+        baseScore: 47,
         due: "3 أيام",
         dueName: "تجديد رخصة / شهادة صحية",
-        docs: "3",
         reqs: [
-          { title: "تجديد الشهادات الصحية للعاملين والرخصة البلدية", priority: "high", prioText: "أولوية قصوى", due: "خلال 3 أيام", source: "الجهة البلدية المختصة — اشتراطات المنشآت الغذائية" },
-          { title: "تقديم الإقرار الدوري ومراجعة الالتزامات الضريبية", priority: "med", prioText: "أولوية متوسطة", due: "خلال 14 يوماً", source: "هيئة الزكاة والضريبة والجمارك — الأطر النظامية ذات العلاقة" },
-          { title: "مراجعة تسجيل العاملين وتحديث بيانات المنشأة", priority: "low", prioText: "متابعة دورية", due: "شهرياً", source: "منصات العمل والتأمينات الاجتماعية ذات العلاقة" }
+          { id: "r1", title: "تجديد الشهادات الصحية للعاملين والرخصة البلدية", priority: "high", prioText: "أولوية قصوى", due: "خلال 3 أيام", saved: 2500, done: false, source: "الجهة البلدية المختصة — اشتراطات المنشآت الغذائية" },
+          { id: "r2", title: "تقديم الإقرار الدوري ومراجعة الالتزامات الضريبية", priority: "med", prioText: "أولوية متوسطة", due: "خلال 14 يوماً", saved: 1200, done: false, source: "هيئة الزكاة والضريبة والجمارك — الأطر النظامية ذات العلاقة" },
+          { id: "r3", title: "مراجعة تسجيل العاملين وتحديث بيانات المنشأة", priority: "low", prioText: "متابعة دورية", due: "شهرياً", saved: 800, done: false, source: "منصات العمل والتأمينات الاجتماعية ذات العلاقة" }
         ]
       },
       ecommerce: {
         label: "متجر إلكتروني",
-        score: "52%",
-        pct: 52,
+        baseScore: 52,
         due: "7 أيام",
         dueName: "مراجعة بيانات السجل والسياسات",
-        docs: "2",
         reqs: [
-          { title: "تحديث بيانات النشاط التجاري وتوضيح سياسات الاستبدال والاسترجاع", priority: "high", prioText: "أولوية قصوى", due: "خلال 7 أيام", source: "نظام التجارة الإلكترونية والأنظمة التجارية ذات العلاقة" },
-          { title: "مراجعة ضوابط حماية البيانات الشخصية للعملاء", priority: "med", prioText: "أولوية متوسطة", due: "خلال 15 يوماً", source: "نظام حماية البيانات الشخصية — الضوابط التنظيمية" },
-          { title: "متابعة الإقرارات الدورية والتقارير الشهرية", priority: "low", prioText: "متابعة دورية", due: "شهرياً", source: "الجهات التنظيمية المختصة بالنشاط التجاري" }
+          { id: "e1", title: "تحديث بيانات النشاط التجاري وتوضيح سياسات الاستبدال والاسترجاع", priority: "high", prioText: "أولوية قصوى", due: "خلال 7 أيام", saved: 2000, done: false, source: "نظام التجارة الإلكترونية والأنظمة التجارية ذات العلاقة" },
+          { id: "e2", title: "مراجعة ضوابط حماية البيانات الشخصية للعملاء", priority: "med", prioText: "أولوية متوسطة", due: "خلال 15 يوماً", saved: 1500, done: false, source: "نظام حماية البيانات الشخصية — الضوابط التنظيمية" },
+          { id: "e3", title: "متابعة الإقرارات الدورية والتقارير الشهرية", priority: "low", prioText: "متابعة دورية", due: "شهرياً", saved: 700, done: false, source: "الجهات التنظيمية المختصة بالنشاط التجاري" }
         ]
       }
     };
+
+    const lawyers = [
+      {
+        id: "l1",
+        name: "أ. سارة الحربي",
+        specialty: "مستشارة عقود وقضايا تجارية",
+        exp: "خبرة في عقود الامتياز التجاري والتوريد للمنشآت الصغيرة والمتوسطة",
+        badge: "متاح اليوم عن بُعد"
+      },
+      {
+        id: "l2",
+        name: "أ. خالد القرشي",
+        specialty: "مختص في الاعتراضات والمخالفات التنظيمية",
+        exp: "خبرة في اللوائح البلدية والتجارية وصياغة مذكرات الاعتراض",
+        badge: "متاح غداً عن بُعد"
+      },
+      {
+        id: "l3",
+        name: "أ. نورة السلمي",
+        specialty: "مستشارة التجارة الإلكترونية وحماية البيانات",
+        exp: "خبرة في أنظمة المتاجر الإلكترونية وسياسات الخصوصية والاسترجاع",
+        badge: "متاح اليوم عن بُعد"
+      }
+    ];
 
     const presetAnswers = [
       {
@@ -418,9 +556,12 @@
     ];
 
     let currentActivity = "restaurant";
+    let currentCity = "مكة المكرمة";
+    let currentEmployees = "12";
+    let selectedLawyerId = "l1";
 
     function switchTab(tabName) {
-      ["dashboard", "setup", "requirements", "advisor"].forEach((t) => {
+      ["dashboard", "setup", "requirements", "advisor", "consultations"].forEach((t) => {
         document.getElementById("tab-" + t).classList.toggle("hidden", t !== tabName);
       });
       document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -429,25 +570,48 @@
         }
       });
       if (tabName === "requirements") renderRequirements();
+      if (tabName === "consultations") renderLawyers();
+    }
+
+    function refreshMetrics() {
+      const info = dataByActivity[currentActivity];
+      const completedCount = info.reqs.filter((r) => r.done).length;
+      const pendingCount = info.reqs.length - completedCount;
+      const bonus = completedCount * 16;
+      const scoreVal = Math.min(100, info.baseScore + bonus);
+      const savedSum = info.reqs.reduce((acc, r) => acc + (r.done ? r.saved : Math.round(r.saved * 0.5)), 0);
+
+      document.getElementById("active-facility-summary").textContent = `${info.label} — ${currentCity} (${currentEmployees} موظفاً)`;
+      document.getElementById("kpi-score").textContent = `${scoreVal}%`;
+      document.getElementById("kpi-bar").style.width = `${scoreVal}%`;
+      document.getElementById("kpi-due").textContent = info.due;
+      document.getElementById("kpi-due-name").textContent = info.dueName;
+      document.getElementById("kpi-docs").textContent = `${pendingCount}`;
+      document.getElementById("kpi-saved").textContent = `غرامات متوقعة تم تجنبها (تقديري): ${savedSum.toLocaleString("en-US")} ر.س`;
+      document.getElementById("dashboard-summary").textContent =
+        `مثال واجهة المستفيد لنشاط (${info.label}) في (${currentCity}) لعدد (${currentEmployees}) موظفين: نسبة الامتثال الحالية ${scoreVal}% والمتطلبات المعلقة ${pendingCount}.`;
+      document.getElementById("consult-notes").value =
+        `منشأة: ${info.label} في ${currentCity} (${currentEmployees} موظفين) — طلب استشارة قانونية عن بُعد حول الالتزامات والعقود التجارية.`;
     }
 
     function applyFacilitySetup() {
       currentActivity = document.getElementById("activity-select").value;
-      const city = document.getElementById("city-input").value || "مكة المكرمة";
-      const emp = document.getElementById("employees-input").value || "12";
-      const info = dataByActivity[currentActivity];
+      currentCity = document.getElementById("city-input").value || "مكة المكرمة";
+      currentEmployees = document.getElementById("employees-input").value || "12";
 
-      document.getElementById("active-facility-summary").textContent = `${info.label} — ${city} (${emp} موظفين)`;
-      document.getElementById("kpi-score").textContent = info.score;
-      document.getElementById("kpi-bar").style.width = info.pct + "%";
-      document.getElementById("kpi-due").textContent = info.due;
-      document.getElementById("kpi-due-name").textContent = info.dueName;
-      document.getElementById("kpi-docs").textContent = info.docs;
-      document.getElementById("dashboard-summary").textContent =
-        `مثال واجهة المستفيد لنشاط (${info.label}) في (${city}) لعدد (${emp}) موظفين: نسبة الامتثال الحالية ${info.score}. راجع تبويب المتطلبات والمواعيد لمتابعة الأولويات.`;
-
+      refreshMetrics();
       renderRequirements();
       switchTab("dashboard");
+    }
+
+    function toggleRequirement(id) {
+      const info = dataByActivity[currentActivity];
+      const item = info.reqs.find((r) => r.id === id);
+      if (item) {
+        item.done = !item.done;
+        refreshMetrics();
+        renderRequirements();
+      }
     }
 
     function renderRequirements() {
@@ -455,9 +619,14 @@
       const container = document.getElementById("requirements-list");
       container.innerHTML = info.reqs.map((r) => `
         <div class="req-item">
-          <div>
-            <span class="tag tag-${r.priority}">${r.prioText}</span>
-            <strong>${r.title}</strong>
+          <div class="req-top">
+            <div>
+              <span class="tag tag-${r.priority}">${r.prioText}</span>
+              <strong>${r.title}</strong>
+            </div>
+            <button class="done-btn ${r.done ? "completed" : ""}" onclick="toggleRequirement('${r.id}')">
+              ${r.done ? "تم الإتمام ✓" : "إتمام المتطلب"}
+            </button>
           </div>
           <div class="muted" style="margin-top:6px;">الاستحقاق: ${r.due}</div>
           <div class="source-box">${r.source}</div>
@@ -471,8 +640,35 @@
         <p><strong>السؤال:</strong> ${item.q}</p>
         <p>${item.a}</p>
         <div class="source-box">${item.src}</div>
-        <div class="source-box" style="margin-top:8px;">تنويه: يحتاج مراجعة قانونية في الحالات غير المؤكدة أو النزاعات؛ المنصة إرشادية فقط.</div>
+        <div class="referral-box">
+          <strong>تنويه الحوكمة:</strong> يُنصح بمراجعة قانونية مختصة في الحالات غير المؤكدة أو النزاعات؛ المنصة إرشادية فقط.
+          <div style="margin-top:8px;">
+            <button class="secondary-btn" onclick="switchTab('consultations')">احجز استشارة مع مختص عن بُعد</button>
+          </div>
+        </div>
       `;
+    }
+
+    function simulateScenario(type) {
+      const info = dataByActivity[currentActivity];
+      if (type === "clear") {
+        document.getElementById("advisor-answer").innerHTML = `
+          <p><strong>سيناريو تحديث تنظيمي دوري — نسبة الوضوح: عالية</strong></p>
+          <p>تمت مطابقة التحديث مع ملف المنشأة (${info.label} في ${currentCity}). ينطبق البند على المتابعة الدورية للرخص والإقرارات دون وجود نزاع أو استثناء خاص.</p>
+          <div class="source-box">المصدر: دليل الامتثال الدوري للمنشأة (مثال توضيحي للنموذج الأولي).</div>
+        `;
+      } else {
+        document.getElementById("advisor-answer").innerHTML = `
+          <p><strong>سيناريو مخالفة / غرامة محل اعتراض — نسبة اليقين الآلي: منخفضة</strong></p>
+          <p>نظراً لوجود مخالفة أو غرامة تتطلب تقديراً قانونياً أو صياغة اعتراض نظامي، لا يجزم النظام آلياً ويُوصي بالإحالة لمراجعة قانونية متخصصة.</p>
+          <div class="referral-box">
+            <strong>ملخص جاهز للإحالة القانونية:</strong> منشأة (${info.label}) في (${currentCity})، عدد الموظفين (${currentEmployees})، الحالة: اعتراض/مخالفة تنظيمية تتطلب مراجعة مختص.
+            <div style="margin-top:8px;">
+              <button class="action-btn" style="width:auto;padding:8px 14px;" onclick="switchTab('consultations')">الانتقال لحجز جلسة عن بُعد مع مختص</button>
+            </div>
+          </div>
+        `;
+      }
     }
 
     function askCustom() {
@@ -485,7 +681,55 @@
       `;
     }
 
+    function selectLawyer(id) {
+      selectedLawyerId = id;
+      const lawyer = lawyers.find((l) => l.id === id);
+      if (lawyer) {
+        document.getElementById("selected-lawyer").value = `${lawyer.name} — ${lawyer.specialty}`;
+      }
+      renderLawyers();
+    }
+
+    function renderLawyers() {
+      const container = document.getElementById("lawyers-list");
+      container.innerHTML = lawyers.map((l) => `
+        <div class="lawyer-card ${l.id === selectedLawyerId ? "selected" : ""}">
+          <div class="req-top">
+            <div>
+              <strong>${l.name}</strong>
+              <div class="muted">${l.specialty}</div>
+            </div>
+            <span class="tag tag-navy">${l.badge}</span>
+          </div>
+          <div class="muted" style="margin:6px 0 10px;">${l.exp}</div>
+          <button class="secondary-btn" onclick="selectLawyer('${l.id}')">
+            ${l.id === selectedLawyerId ? "مختار للحجز ✓" : "اختيار المستشار"}
+          </button>
+        </div>
+      `).join("");
+    }
+
+    function bookConsultation() {
+      const lawyer = document.getElementById("selected-lawyer").value;
+      const topic = document.getElementById("consult-topic").value;
+      const duration = document.getElementById("consult-duration").value;
+      const slot = document.getElementById("consult-slot").value;
+      const notes = document.getElementById("consult-notes").value;
+
+      document.getElementById("booking-result").innerHTML = `
+        <div class="booking-confirm">
+          <strong>تم تأكيد طلب الجلسة الاستشارية عن بُعد (نموذج أولي):</strong><br/>
+          المستشار: ${lawyer}<br/>
+          الموضوع: ${topic}<br/>
+          المدة والموعد: ${duration} | ${slot}<br/>
+          ملخص الحالة المرفق: ${notes}
+        </div>
+      `;
+    }
+
+    refreshMetrics();
     renderRequirements();
+    renderLawyers();
   </script>
 </body>
 </html>
